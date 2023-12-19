@@ -13,6 +13,6 @@ class Department < ApplicationRecord
 
   }
 
-  has_many :staffs, class_name: 'AdminUser'
+  has_many :staffs, class_name: 'AdminUser', dependent: :destroy
     
 end
