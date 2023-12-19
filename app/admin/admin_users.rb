@@ -1,28 +1,53 @@
 ActiveAdmin.register AdminUser do
-  permit_params :email, :password, :password_confirmation
+  role_changeable
+  permit_params :email, :password, :password_confirmation, :department_id, :role, educations_attributes: [:id, :institution_name, :level, :qualification, :start_year, :completed_year, :specialization, :_destroy], experiences_attributes: [:id, :company, :position, :start_date, :end_date, :_destroy]
+
+  menu label: 'Admin User', if: proc { current_admin_user.admin_user? }
+
+  actions :all, :except => [:edit]
 
   index do
     selectable_column
     id_column
     column :email
-    column :current_sign_in_at
-    column :sign_in_count
+    column :role
+    column :department_id do |obj|
+      department = Department.find_by(id: obj.department_id)
+      department.department_name if department
+    end
     column :created_at
     actions
   end
 
+  show do
+    attributes_table do
+      row :email
+      row :role 
+      row :department_id do |obj|
+        department = Department.find_by(id: obj.department_id)
+        department.department_name if department
+      end
+      row :created_at
+      row :updated_at     
+    end
+  end
+
   filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
+  filter :role
   filter :created_at
 
   form do |f|
     f.inputs do
       f.input :email
+      if current_admin_user.admin_user?
+        f.input :role
+        f.input :department, as: :select, collection: Department.all.map { |dept| [dept.department_name, dept.id] }
+      end
       f.input :password
       f.input :password_confirmation
     end
     f.actions
   end
+    
 
 end

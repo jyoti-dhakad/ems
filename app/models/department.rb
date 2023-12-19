@@ -12,5 +12,7 @@ class Department < ApplicationRecord
     IT: 'Information Technology'
 
   }
+
+  has_many :staffs, class_name: 'AdminUser'
     
 end

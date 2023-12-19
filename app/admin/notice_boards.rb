@@ -31,8 +31,6 @@ ActiveAdmin.register NoticeBoard do
       f.input :subject
       f.input :content
       f.input :date
-      
-
     end
     f.actions
   end

@@ -1,9 +1,18 @@
 class AdminUser < ApplicationRecord
+  role_based_authorizable
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
-         def self.ransackable_attributes(auth_object = nil)
-          ["created_at", "email", "encrypted_password", "id", "remember_created_at", "reset_password_sent_at", "reset_password_token", "updated_at"]
-         end
+
+  belongs_to :department, optional: true
+  has_many :educations, class_name: 'Education', foreign_key: 'staff_id'
+  has_many :experiences, class_name: 'Experience', foreign_key: 'staff_id'
+  
+  accepts_nested_attributes_for :educations, allow_destroy: true
+  accepts_nested_attributes_for :experiences, allow_destroy: true
+
+  def staff?
+    role == 'staff'
+  end
 end
