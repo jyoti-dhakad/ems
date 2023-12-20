@@ -14,6 +14,7 @@ ActiveAdmin.register Leave do
 
   member_action :approve, method: :put do
     resource.update(status: true)
+    LeaveApprovalMailer.leave_approval(resource).deliver_now
     redirect_to admin_leaves_path, notice: "Leave approved successfully."
   end
 
@@ -23,7 +24,7 @@ ActiveAdmin.register Leave do
     
     if current_admin_user.admin_user?
       column :staff_id do |staff|
-        staff_email = AdminUser.find_by(id: staff.id)
+        staff_email = AdminUser.find_by(id: staff.staff_id)
         staff_email.email
       end
     end

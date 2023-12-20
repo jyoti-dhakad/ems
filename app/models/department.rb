@@ -15,4 +15,5 @@ class Department < ApplicationRecord
 
   has_many :staffs, class_name: 'AdminUser', dependent: :destroy
     
+  validates :department_name, presence:true
 end
