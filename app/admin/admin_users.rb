@@ -28,7 +28,29 @@ ActiveAdmin.register AdminUser do
         department.department_name if department
       end
       row :created_at
-      row :updated_at     
+      row :updated_at  
+      
+      if resource.staff?
+        panel 'Education' do
+          table_for resource.educations do
+            column :institution_name
+            column :level
+            column :qualification
+            column :start_year
+            column :completed_year
+            column :specialization
+          end
+        end
+  
+        panel 'Experience' do
+          table_for resource.experiences do
+            column :company
+            column :position
+            column :start_date
+            column :end_date
+          end
+        end
+      end
     end
   end
 
