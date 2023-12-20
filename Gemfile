@@ -56,7 +56,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
-gem 'activeadmin'
+gem 'activeadmin', '2.12.0'
 gem 'devise'
 
 gem 'arctic_admin'
