@@ -7,6 +7,7 @@ class Ability
 
     if user.admin_user?
       can :manage, :all
+      cannot [:create, :update, :destroy], Leave
     else
       register_role_based_abilities(user)
     end

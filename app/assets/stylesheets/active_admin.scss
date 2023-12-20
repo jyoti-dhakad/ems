@@ -16,3 +16,10 @@ $primary-color: rgb(0, 136, 255);
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+.approve-button {
+    background-color: green;
+    color: white;
+    padding: 5px 10px; 
+    border-radius: 3px;
+    text-decoration: none;
+  }

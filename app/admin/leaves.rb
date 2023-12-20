@@ -1,12 +1,7 @@
 ActiveAdmin.register Leave do
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-   permit_params :staff_id, :start_date, :end_date, :leave_type, :reason, :status
-  #
+  permit_params :staff_id, :start_date, :end_date, :leave_type, :reason, :status
+
   controller do
     def scoped_collection
       if current_admin_user.staff?
@@ -16,28 +11,37 @@ ActiveAdmin.register Leave do
       end
     end
   end
-  # member_action :approve, method: :put do
-  #   resource.update(status: true)
-  #   redirect_to admin_leaves_path, notice: "Leave approved successfully."
-  # end
 
+  member_action :approve, method: :put do
+    resource.update(status: true)
+    redirect_to admin_leaves_path, notice: "Leave approved successfully."
+  end
 
   index do
     selectable_column
     id_column
-    column :staff_id if current_admin_user.admin_user?
+    
+    if current_admin_user.admin_user?
+      column :staff_id do |staff|
+        staff_email = AdminUser.find_by(id: staff.id)
+        staff_email.email
+      end
+    end
+
     column :start_date
     column :end_date
     column :leave_type
     column :reason
     column :status
-  
     
-    # actions defaults: true do |leave|
-    #   link_to 'Approve', approve_admin_leave_path(leave), method: :put if !leave.status
-    # end
-    actions
+    actions defaults: true do |leave|
+      if !leave.status && current_admin_user.admin_user?
+        link_to 'Approve', "/admin/leaves/#{leave.id}/approve", method: :put, class: 'approve-button'
+      end
+    end    
+      
   end
+
   show do
     attributes_table do
       row :staff_id if current_admin_user.admin_user?
@@ -46,8 +50,6 @@ ActiveAdmin.register Leave do
       row :leave_type
       row :reason
       row :status
-  
-      
     end
   end
 
@@ -58,9 +60,6 @@ ActiveAdmin.register Leave do
       f.input :end_date
       f.input :leave_type, as: :select, collection: Leave.leave_types.values
       f.input :reason
-      f.input :status
-      
-
     end
     f.actions
   end
