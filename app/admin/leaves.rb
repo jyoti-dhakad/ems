@@ -66,5 +66,12 @@ ActiveAdmin.register Leave do
     end
     f.actions
   end
+
+  filter :staff_id,as: :select,collection: proc { AdminUser.all.map { |user| [user.email, user.id] } }, if: proc { current_admin_user&.admin_user? }
+  filter :start_date
+  filter :end_date
+  filter :leave_type, as: :select, collection: Leave.leave_types.values
+  filter :reason
+  filter :status, as: :select, collection: [['Pending', false], ['Approved', true]]
   
 end
