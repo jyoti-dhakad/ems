@@ -1,6 +1,6 @@
 ActiveAdmin.register AdminUser, as: "Profile" do
     permit_params(
-      :email,
+      :email, :profile_image,
       educations_attributes: [:id, :institution_name, :level, :qualification, :start_year, :completed_year, :specialization, :_destroy],
       experiences_attributes: [:id, :company, :position, :start_date, :end_date, :_destroy]
     )
@@ -16,14 +16,26 @@ ActiveAdmin.register AdminUser, as: "Profile" do
   
     show do
         attributes_table do
-            row :email
-            row :role 
-            row :department_id do |obj|
-                department = Department.find_by(id: obj.department_id)
-                department.department_name if department
+          if current_admin_user.staff?
+            row :profile_image do |image|
+              if image.profile_image.attached?
+                div class: 'circular-profile-image' do
+                  image_tag(image.profile_image, class: 'profile-image')
+                end
+              else
+                content_tag(:span, 'No Image')
+              end
             end
-            row :created_at
-            row :updated_at
+          end
+          
+          row :email
+          row :role 
+          row :department_id do |obj|
+              department = Department.find_by(id: obj.department_id)
+              department.department_name if department
+          end
+          row :created_at
+          row :updated_at
         end
         if current_admin_user.staff?
             panel 'Educations' do
@@ -56,6 +68,7 @@ ActiveAdmin.register AdminUser, as: "Profile" do
         f.input :email
   
         if current_admin_user.staff?
+            f.input :profile_image, as: :file
             f.has_many :educations, heading: 'Educations', allow_destroy: true, new_record: 'Add Education' do |edu|
             edu.input :institution_name
             edu.input :level
