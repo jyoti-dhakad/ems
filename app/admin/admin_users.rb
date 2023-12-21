@@ -31,7 +31,7 @@ ActiveAdmin.register AdminUser do
       row :updated_at  
       
       if resource.staff?
-        panel 'Education' do
+        panel 'Educations' do
           table_for resource.educations do
             column :institution_name
             column :level
@@ -42,7 +42,7 @@ ActiveAdmin.register AdminUser do
           end
         end
   
-        panel 'Experience' do
+        panel 'Experiences' do
           table_for resource.experiences do
             column :company
             column :position

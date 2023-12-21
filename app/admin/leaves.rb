@@ -33,7 +33,9 @@ ActiveAdmin.register Leave do
     column :end_date
     column :leave_type
     column :reason
-    column :status
+    column :status do |leave|
+      status_tag leave.status ? 'Approved' : 'Pending', class: leave.status ? 'yes' : 'no'
+    end
     
     actions defaults: true do |leave|
       if !leave.status && current_admin_user.admin_user?
