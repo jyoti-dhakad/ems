@@ -6,7 +6,7 @@ class CreateLeaves < ActiveRecord::Migration[6.1]
       t.date :end_date
       t.string :leave_type
       t.text :reason
-      t.boolean :status, default: false
+      t.boolean :status
 
       t.timestamps
     end
