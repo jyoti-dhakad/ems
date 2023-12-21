@@ -4,7 +4,17 @@ ActiveAdmin.register AdminUser do
 
   menu label: 'Admin User', if: proc { current_admin_user.admin_user? }
 
-  actions :all, :except => [:edit]
+  # actions :all, :except => [:edit]
+
+  controller do
+    def scoped_collection
+      if current_admin_user.staff?
+        AdminUser.where(id: current_admin_user.id)
+      else
+        AdminUser.all
+      end
+    end
+  end
 
   index do
     selectable_column
