@@ -37,3 +37,65 @@ $primary-color: rgb(0, 136, 255);
     object-fit: cover;
     border-radius: 50%;
   }
+
+  .header #utility_nav {
+    background-color: #000000; 
+}
+
+.header .site_title{
+background-color: #000000;
+color: #fff;
+}
+
+.header #utility_nav #current_user a:before,
+.header #utility_nav #logout a:before {
+  color: #fff;
+  transition: color 0.3s ease; 
+}
+
+.header #utility_nav #current_user a:hover:before,
+.header #utility_nav #logout a:hover:before {
+  color: #446677;
+  background-color: #000;
+}
+
+body {
+  background-color: #7dc5bf
+}
+
+.header #tabs li {
+  font-size: 16px;
+}
+
+.header #tabs {
+  background-color: #000;
+} 
+
+.header #tabs {
+  background-color: #000;
+}
+
+.header #tabs li.current a {
+  color: #7dc5a0; /* Text color for the current tab */
+  background-color: #333; /* Background color for the current tab */
+  border-radius: 5px; /* Add rounded corners to create a box-like appearance */
+  padding: 4px 8px; /* Adjust padding for better visual balance */
+}
+
+.header #tabs li a {
+  color: #fff;
+  padding: 4px 8px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.header #tabs li a:hover {
+  color: #446677; 
+  border-radius: 5px;
+  background-color: #333;
+}
+
+.flash_notice {
+  background-color: #68be46;
+  color: #fff;
+}
