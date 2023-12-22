@@ -62,3 +62,6 @@ gem 'devise'
 gem 'arctic_admin'
 
 gem 'active_admin_role'
+
+gem 'prawn'
+gem 'prawn-table'
