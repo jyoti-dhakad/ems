@@ -31,6 +31,18 @@ ActiveAdmin.register AdminUser do
 
   show do
     attributes_table do
+      if resource.staff?
+        row :profile_image do |image|
+          if image.profile_image.attached?
+            div class: 'circular-profile-image' do
+              image_tag(image.profile_image, class: 'profile-image')
+            end
+          else
+            content_tag(:span, 'No Image')
+          end
+        end
+      end
+      
       row :email
       row :role 
       row :department_id do |obj|
