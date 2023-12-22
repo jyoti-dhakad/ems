@@ -18,6 +18,26 @@ ActiveAdmin.register Leave do
     redirect_to admin_leaves_path, notice: "Leave approved successfully."
   end
 
+  scope "All", default: true do |leaves|
+    leaves
+  end
+
+  scope "Last Month" do |leaves|
+    leaves.where("start_date >= ? AND start_date <= ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month)
+  end
+
+  scope "Current Month" do |leaves|
+    leaves.where("start_date >= ? AND start_date <= ?", Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  scope "Next Month" do |leaves|
+    leaves.where("start_date >= ? AND start_date <= ?", 1.month.from_now.beginning_of_month, 1.month.from_now.end_of_month)
+  end
+
+  scope "Today" do |leaves|
+    leaves.where("start_date = ?", Date.today)
+  end
+
   index do
     selectable_column
     id_column
