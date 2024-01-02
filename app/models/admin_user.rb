@@ -22,4 +22,6 @@ class AdminUser < ApplicationRecord
   def admin_user?
     role == 'admin_user'
   end
+
+  has_one_attached :profile_image
 end
