@@ -22,8 +22,13 @@ ActiveAdmin.register ::ActiveAdmin::Permission, as: "Permission" do
   controller.resource_class.states.each_key do |state|
     batch_action state do |ids|
       resource_class.clear_cache
-      resource_class.where(id: ids).update_all(state: resource_class.states[state])
-      PermissionMailer.permission_notification(resource_class.find(ids.first)).deliver_now
+  
+      # Loop through each permission individually
+      resource_class.where(id: ids).each do |permission|
+        permission.update(state: resource_class.states[state])
+        PermissionMailer.permission_notification(permission).deliver_now
+      end
+  
       redirect_back fallback_location: admin_root_url, notice: t("views.permission.notice.state_changed", state: state)
     end
   end
