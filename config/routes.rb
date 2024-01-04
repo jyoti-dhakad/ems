@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :leaves do
       member do
         put :approve
+        put :cancel
       end
     end
   end

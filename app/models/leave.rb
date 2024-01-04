@@ -5,6 +5,8 @@ class Leave < ApplicationRecord
       Half_day: 'Half day',
       Full_day: 'Full day'
     }
+
+    enum status: { pending: 0, cancelled: 1, approved: 2 }
   
     validates :staff_id, presence: true
     validates :start_date, :end_date, presence: true

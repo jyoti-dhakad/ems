@@ -13,10 +13,18 @@ ActiveAdmin.register Leave do
   end
 
   member_action :approve, method: :put do
-    resource.update(status: true)
+    resource.update(status: :approved)
     LeaveApprovalMailer.leave_approval(resource).deliver_now
     redirect_to admin_leaves_path, notice: "Leave approved successfully."
   end
+  
+  member_action :cancel, method: :put do
+    resource.update(status: :cancelled)
+    # Add any additional logic or notifications for leave cancellation here
+    redirect_to admin_leaves_path, notice: "Leave cancelled successfully."
+  end
+
+  
 
   scope "All", default: true do |leaves|
     leaves
@@ -53,17 +61,24 @@ ActiveAdmin.register Leave do
     column :end_date
     column :leave_type
     column :reason
-    column :status do |leave|
-      status_tag leave.status ? 'Approved' : 'Pending', class: leave.status ? 'yes' : 'no'
-    end
+    column :status
     
-    actions defaults: true do |leave|
-      if !leave.status && current_admin_user.admin_user?
-        link_to 'Approve', "/admin/leaves/#{leave.id}/approve", method: :put, class: 'approve-button'
-      end
-    end    
-      
+    actions 
   end
+  
+  action_item :approve, only: :show do
+    if current_admin_user.admin_user? && !resource.approved?
+      link_to 'Approve', "/admin/leaves/#{params[:id]}/approve", method: :put
+    end
+  end
+  
+  action_item :cancel, only: :show do
+    if current_admin_user.admin_user? && !resource.cancelled?
+      link_to 'Cancel', "/admin/leaves/#{params[:id]}/cancel", method: :put
+    end
+  end
+      
+  
 
   show do
     attributes_table do
