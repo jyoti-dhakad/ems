@@ -77,8 +77,6 @@ ActiveAdmin.register Leave do
       link_to 'Cancel', "/admin/leaves/#{params[:id]}/cancel", method: :put
     end
   end
-      
-  
 
   show do
     attributes_table do
@@ -107,6 +105,6 @@ ActiveAdmin.register Leave do
   filter :end_date
   filter :leave_type, as: :select, collection: Leave.leave_types.values
   filter :reason
-  filter :status, as: :select, collection: [['Pending', false], ['Approved', true]]
+  filter :status, as: :select, collection: [['Pending', 0], ['Cancelled',1], ['Approved', 2]]
   
 end
