@@ -10,19 +10,37 @@ ActiveAdmin.register Attendence do
         Attendence.all
       end
     end
-  end
 
+    def calculate_total_attendance_count
+      @total_attendance_count =
+        if current_admin_user&.admin_user?
+          Attendence.ransack(params[:q]).result.count
+        elsif current_admin_user&.staff?
+          Attendence.where(staff_id: current_admin_user.id).ransack(params[:q]).result.count
+        else
+          Attendence.count
+        end
+    end
+  
+    helper_method :calculate_total_attendance_count
+  end
+  
   index do
+    calculate_total_attendance_count
+    div class: 'total-attendance-count' do
+      "<strong>Total Attendance Count:</strong> #{calculate_total_attendance_count}".html_safe
+    end
+    
     selectable_column
     id_column
-    
+
     if current_admin_user.admin_user?
       column :staff_id do |staff|
         staff_email = AdminUser.find_by(id: staff.staff_id)
         staff_email.email
       end
     end
-
+   
     column :date
     column :status
     
