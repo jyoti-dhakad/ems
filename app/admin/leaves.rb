@@ -24,8 +24,6 @@ ActiveAdmin.register Leave do
     redirect_to admin_leaves_path, notice: "Leave cancelled successfully."
   end
 
-  
-
   scope "All", default: true do |leaves|
     leaves
   end
@@ -92,8 +90,8 @@ ActiveAdmin.register Leave do
   form do |f|
      f.inputs 'Leaves Details' do
       f.input :staff_id, as: :hidden, input_html: { value: current_admin_user.id }
-      f.input :start_date
-      f.input :end_date
+      f.input :start_date, as: :datepicker
+      f.input :end_date, as: :datepicker
       f.input :leave_type, as: :select, collection: Leave.leave_types.values
       f.input :reason
     end

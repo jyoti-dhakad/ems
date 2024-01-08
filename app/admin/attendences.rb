@@ -1,4 +1,5 @@
-ActiveAdmin.register Attendence do
+ActiveAdmin.register Attendence, as: "Attendence Record" do
+  menu parent: "Attendances"
 
   permit_params :staff_id, :date, :status
   

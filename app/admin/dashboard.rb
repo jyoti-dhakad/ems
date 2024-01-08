@@ -6,14 +6,20 @@ ActiveAdmin.register_page "Dashboard" do
 
     # Check if the current user is a staff member
     if current_admin_user.staff?
-      # Show attendance-related information
-      div class: "attendance_container" do
-        span class: "attendance_option" do
-          link_to "Login", login_staffs_path, method: :post
+
+      div do   
+        div do
+          render partial: 'admin/check_in_descriptions'     
+          div class: "check_in_card" do
+            link_to "Check In", login_staffs_path, method: :post
+          end
         end
 
-        span class: "attendance_option" do
-          link_to "Logout", logout_staffs_path, method: :delete
+        div do 
+          render partial: 'admin/check_out_descriptions'   
+          div class: "check_out_card" do
+            link_to "Check Out", logout_staffs_path, method: :delete
+          end
         end
       end
 

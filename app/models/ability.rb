@@ -8,6 +8,7 @@ class Ability
     if user.admin_user?
       can :manage, :all
       cannot [:create, :update, :destroy], Leave
+      cannot :read, ActiveAdmin::Page, name: "Attendance Calendar"
     else
       register_role_based_abilities(user)
     end
