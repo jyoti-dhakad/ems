@@ -4,19 +4,37 @@ ActiveAdmin.register_page "Dashboard" do
 
   content title: proc { I18n.t("active_admin.dashboard") } do
 
+    # Welcome message for logged-in user
+    if current_admin_user.staff?
+      div class: "welcome-message" do
+        h2 "Welcome, #{current_admin_user.email}!"
+        h4 "Your dashboard is ready for you."
+      end
+    end
+
     # Check if the current user is a staff member
     if current_admin_user.staff?
 
-      div do   
-        div do
-          render partial: 'admin/check_in_descriptions'     
+      div class: "dashboard-container" do
+        div class: "notice-board" do
+          # Fetch the latest notice
+          notice = NoticeBoard.last
+
+          # Display the notice board
+          h2 "Notice"
+          h3 notice.subject
+          span notice.content
+        end
+
+        div class: "check-in-container" do
+          render partial: 'admin/check_in_descriptions'
           div class: "check_in_card" do
             link_to "Check In", login_staffs_path, method: :post
           end
         end
 
-        div do 
-          render partial: 'admin/check_out_descriptions'   
+        div class: "check-out-container" do
+          render partial: 'admin/check_out_descriptions'
           div class: "check_out_card" do
             link_to "Check Out", logout_staffs_path, method: :delete
           end

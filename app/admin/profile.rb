@@ -1,4 +1,5 @@
 ActiveAdmin.register AdminUser, as: "Profile" do
+    menu priority: 2
     permit_params(
       :email, :profile_image,
       educations_attributes: [:id, :institution_name, :level, :qualification, :start_year, :completed_year, :specialization, :_destroy],
