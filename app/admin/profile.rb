@@ -49,7 +49,7 @@ ActiveAdmin.register AdminUser, as: "Profile" do
                 column :specialization
                 end
             end
-        
+            hr
             panel 'Experiences' do
                 table_for current_admin_user.experiences do
                 column :company
@@ -58,7 +58,7 @@ ActiveAdmin.register AdminUser, as: "Profile" do
                 column :end_date
                 end
             end
-
+            hr
             panel 'Documents' do
               table_for current_admin_user.documents do
                 column :document_type
@@ -89,6 +89,7 @@ ActiveAdmin.register AdminUser, as: "Profile" do
   
         if current_admin_user.staff?
             f.input :profile_image, as: :file
+            hr
             f.has_many :educations, heading: 'Educations', allow_destroy: true, new_record: 'Add Education' do |edu|
             edu.input :institution_name
             edu.input :level
@@ -97,14 +98,16 @@ ActiveAdmin.register AdminUser, as: "Profile" do
             edu.input :completed_year
             edu.input :specialization
             end
-    
+            br
+            hr
             f.has_many :experiences, heading: 'Experiences', allow_destroy: true, new_record: 'Add Experience' do |exp|
             exp.input :company
             exp.input :position
             exp.input :start_date
             exp.input :end_date
             end
-
+            br
+            hr
             f.has_many :documents, heading: 'Documents', allow_destroy: true, new_record: 'Add Document' do |doc|
               doc.input :document_type, as: :select
               doc.input :files, as: :file, input_html: { multiple: true }, hint: (
@@ -113,10 +116,10 @@ ActiveAdmin.register AdminUser, as: "Profile" do
                     link_to(file.filename, rails_blob_path(file, disposition: 'attachment')) + tag.br
                   end.join.html_safe
                 else
-                  content_tag(:span, 'No Files Attached')
+                  content_tag(:span, 'No Files Attached') + + tag.br +
+                  content_tag(:span, 'Allowed file formats: PDF, JPEG, or PNG')
                 end
               )
-              doc.input :staff_id, as: :hidden, input_html: { value: current_admin_user.id }
             end
             
         end

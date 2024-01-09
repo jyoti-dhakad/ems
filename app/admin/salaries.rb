@@ -3,7 +3,9 @@ ActiveAdmin.register Salary do
   permit_params :staff_id, :date, :payment_method, :amount, :status
 
   action_item :send_salary_email, only: :show do
-    link_to 'Send Salary Email', send_salary_email_admin_salary_path(salary), method: :put
+    if current_admin_user.admin_user?
+      link_to 'Send Salary Email', send_salary_email_admin_salary_path(salary), method: :put
+    end
   end
 
   member_action :send_salary_email, method: :put do
