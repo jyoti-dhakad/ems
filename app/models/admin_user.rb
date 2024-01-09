@@ -11,9 +11,11 @@ class AdminUser < ApplicationRecord
   has_many :leaves, class_name: 'Leave', foreign_key: 'staff_id', dependent: :destroy
   has_many :attendences, class_name: 'Attendence', foreign_key: 'staff_id', dependent: :destroy
   has_many :salaries, class_name: 'Salary', foreign_key: 'staff_id', dependent: :destroy
+  has_many :documents, class_name: 'Document', foreign_key: 'staff_id', dependent: :destroy
 
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :experiences, allow_destroy: true
+  accepts_nested_attributes_for :documents, allow_destroy: true
 
   def staff?
     role == 'staff'

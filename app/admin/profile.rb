@@ -3,7 +3,8 @@ ActiveAdmin.register AdminUser, as: "Profile" do
     permit_params(
       :email, :profile_image,
       educations_attributes: [:id, :institution_name, :level, :qualification, :start_year, :completed_year, :specialization, :_destroy],
-      experiences_attributes: [:id, :company, :position, :start_date, :end_date, :_destroy]
+      experiences_attributes: [:id, :company, :position, :start_date, :end_date, :_destroy],
+      documents_attributes: [:id, :document_type, :_destroy, files: []]
     )
   
     actions :all, :except => [:new, :destroy]
@@ -14,7 +15,6 @@ ActiveAdmin.register AdminUser, as: "Profile" do
         end
     end
     
-  
     show do
         attributes_table do
           if current_admin_user.staff?
@@ -58,6 +58,25 @@ ActiveAdmin.register AdminUser, as: "Profile" do
                 column :end_date
                 end
             end
+
+            panel 'Documents' do
+              table_for current_admin_user.documents do
+                column :document_type
+                column :files do |document|
+                  if document.files.attached?
+                    ul do
+                      document.files.each do |file|
+                        li do
+                          link_to(file.filename, rails_blob_path(file, disposition: 'attachment'))
+                        end
+                      end
+                    end
+                  else
+                    content_tag(:span, 'No file')
+                  end
+                end
+              end
+          end
         end
     end
   
@@ -85,6 +104,21 @@ ActiveAdmin.register AdminUser, as: "Profile" do
             exp.input :start_date
             exp.input :end_date
             end
+
+            f.has_many :documents, heading: 'Documents', allow_destroy: true, new_record: 'Add Document' do |doc|
+              doc.input :document_type, as: :select
+              doc.input :files, as: :file, input_html: { multiple: true }, hint: (
+                if doc.object.files.attached?
+                  doc.object.files.map do |file|
+                    link_to(file.filename, rails_blob_path(file, disposition: 'attachment')) + tag.br
+                  end.join.html_safe
+                else
+                  content_tag(:span, 'No Files Attached')
+                end
+              )
+              doc.input :staff_id, as: :hidden, input_html: { value: current_admin_user.id }
+            end
+            
         end
       end
   

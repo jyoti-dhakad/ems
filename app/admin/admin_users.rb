@@ -72,6 +72,25 @@ ActiveAdmin.register AdminUser do
             column :end_date
           end
         end
+
+        panel 'Documents' do
+          table_for resource.documents do
+            column :document_type
+            column :files do |document|
+              if document.files.attached?
+                ul do
+                  document.files.each do |file|
+                    li do
+                      link_to(file.filename, rails_blob_path(file, disposition: 'attachment'))
+                    end
+                  end
+                end
+              else
+                content_tag(:span, 'No file')
+              end
+            end
+          end
+        end
       end
     end
   end
