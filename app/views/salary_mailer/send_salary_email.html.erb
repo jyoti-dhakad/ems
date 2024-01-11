@@ -44,7 +44,10 @@
     <h1>Congratulations! Salary Credited Successfully</h1>
     <p>Dear <%= @user.email %>,</p>
     <p>We are pleased to inform you that your salary for the month has been credited successfully.</p>
-    <p>Attached your salary slip for your reference.</p>
+    <p>Your salary for the month of <%= @salary.date.strftime('%B %Y') %> has been credited.</p>
+    <p>The total amount is <%= @salary.amount %>.</p>
+    <p>The deducted amount for leaves is <%= @net_amount %>.</p>
+    <p>Please find the attached salary slip for details.</p>
     <footer>
       <p>Thank you for your hard work!</p>
     </footer>
