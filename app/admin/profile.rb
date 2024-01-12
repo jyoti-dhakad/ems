@@ -1,7 +1,7 @@
 ActiveAdmin.register AdminUser, as: "Profile" do
     menu priority: 2
     permit_params(
-      :email, :profile_image,
+      :email, :full_name, :date_of_birth, :address, :contact_number, :gender, :profile_image,
       educations_attributes: [:id, :institution_name, :level, :qualification, :start_year, :completed_year, :specialization, :_destroy],
       experiences_attributes: [:id, :company, :position, :start_date, :end_date, :_destroy],
       documents_attributes: [:id, :document_type, :_destroy, files: []]
@@ -31,12 +31,16 @@ ActiveAdmin.register AdminUser, as: "Profile" do
           
           row :email
           row :role 
+          row :full_name
+          row :address
+          row :contact_number
+          row :gender
+          row :date_of_birth
           row :department_id do |obj|
               department = Department.find_by(id: obj.department_id)
               department.department_name if department
           end
-          row :created_at
-          row :updated_at
+          
         end
         if current_admin_user.staff?
             panel 'Educations' do
@@ -85,10 +89,16 @@ ActiveAdmin.register AdminUser, as: "Profile" do
   
     form do |f|
       f.inputs 'Staff Profile Details' do
+        f.input :profile_image, as: :file
         f.input :email
+        f.input :full_name
+        f.input :address
+        f.input :contact_number
+        f.input :gender
+        f.input :date_of_birth, as: :date_select, start_year: Date.current.year - 100, end_year: Date.current.year
+
   
         if current_admin_user.staff?
-            f.input :profile_image, as: :file
             hr
             f.has_many :educations, heading: 'Educations', allow_destroy: true, new_record: 'Add Education' do |edu|
             edu.input :institution_name

@@ -16,6 +16,11 @@ class StaffsController < ApplicationController
       redirect_to admin_root_path
     end
 
+    def profile_card
+      @user = current_admin_user
+      # redirect_to profile_card_staffs_path
+    end
+
     def show_attendence
       start_date = params[:start].to_date
       end_date = params[:end].to_date

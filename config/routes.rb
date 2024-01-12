@@ -23,5 +23,8 @@ Rails.application.routes.draw do
     get :show_attendence, on: :collection
   end
     
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :holidays, only: [] do
+    get :show_holidays, on: :collection
+  end
+    
 end
