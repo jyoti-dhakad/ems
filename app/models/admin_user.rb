@@ -1,9 +1,7 @@
 class AdminUser < ApplicationRecord
   role_based_authorizable
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, 
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :trackable 
 
   belongs_to :department, optional: true
   has_many :educations, class_name: 'Education', foreign_key: 'staff_id', dependent: :destroy

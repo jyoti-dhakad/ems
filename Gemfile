@@ -66,3 +66,6 @@ gem 'active_admin_role'
 gem 'prawn'
 gem 'prawn-table'
 gem 'activeadmin-index_as_calendar'
+
+gem 'concurrent-ruby', '1.3.4'
+gem 'geocoder'

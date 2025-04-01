@@ -1,6 +1,6 @@
 ActiveAdmin.register Leave do
 
-  permit_params :staff_id, :start_date, :end_date, :leave_type, :reason, :status
+  permit_params :staff_id, :start_date, :end_date, :leave_type_id, :reason, :status
 
   controller do
     def scoped_collection
@@ -86,22 +86,56 @@ ActiveAdmin.register Leave do
       row :status
     end
   end
+  
 
   form do |f|
-     f.inputs 'Leaves Details' do
+    staff = current_admin_user
+    leave_types = LeaveType.all
+  
+    panel "Your Leave Summary" do
+      div class: "leave-summary-container" do
+        leave_types.each do |leave_type|
+          total_allowed = leave_type.max_allowed || 0
+          taken = Leave.where(staff_id: staff.id, leave_type_id: leave_type.id)
+                       .where("start_date >= ?", Date.today.beginning_of_year)
+                       .count
+          remaining = [total_allowed - taken, 0].max
+  
+          div class: "leave-card" do
+            h3 leave_type.name, class: "leave-type-title"
+            div class: "leave-info" do
+              span "🟢 Total Allowed: #{total_allowed}", class: "leave-total"
+              span "🔴 Leaves Taken: #{taken}", class: "leave-taken"
+              span "🟡 Remaining: #{remaining}", class: "leave-remaining"
+            end
+          end
+        end
+      end
+    end
+  
+    available_leave_types = leave_types.select do |leave_type|
+      taken = Leave.where(staff_id: staff.id, leave_type_id: leave_type.id)
+                   .where("start_date >= ?", Date.today.beginning_of_year)
+                   .count
+      allowed = leave_type.max_allowed || 0
+      taken < allowed
+    end
+  
+    f.inputs 'Apply for Leave' do
       f.input :staff_id, as: :hidden, input_html: { value: current_admin_user.id }
       f.input :start_date, as: :datepicker
       f.input :end_date, as: :datepicker
-      f.input :leave_type, as: :select, collection: Leave.leave_types.values
+      f.input :leave_type_id, as: :select, 
+              collection: available_leave_types.map { |lt| [lt.name, lt.id] }, 
+              prompt: "Select Available Leave Type"
       f.input :reason
     end
     f.actions
-  end
+  end  
 
   filter :staff_id,as: :select,collection: proc { AdminUser.all.map { |user| [user.email, user.id] } }, if: proc { current_admin_user&.admin_user? }
   filter :start_date
   filter :end_date
-  filter :leave_type, as: :select, collection: Leave.leave_types.values
   filter :reason
   filter :status, as: :select, collection: [['Pending', 0], ['Cancelled',1], ['Approved', 2]]
   

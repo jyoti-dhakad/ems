@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :staffs, only: [] do
+    post :check_in, on: :collection
     post :login, on: :collection
     delete :logout, on: :collection
     get :show_attendence, on: :collection

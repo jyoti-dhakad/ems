@@ -71,15 +71,28 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   :user_name => '641386ba362d38',
+  #   :password => '0cccbf0fecf600',
+  #   :address => 'sandbox.smtp.mailtrap.io',
+  #   :host => 'sandbox.smtp.mailtrap.io',
+  #   :port => '2525',
+  #   :authentication => :login
+  # }
+  config.action_mailer.default_url_options = {
+    :host => 'localhost:3000',
+    :protocol => 'http'
+  }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :user_name => '641386ba362d38',
-    :password => '0cccbf0fecf600',
-    :address => 'sandbox.smtp.mailtrap.io',
-    :host => 'sandbox.smtp.mailtrap.io',
-    :port => '2525',
-    :authentication => :login
+    :address => 'smtp.gmail.com',
+    :port => 587,
+    :user_name => 'sha0516b@gmail.com',
+    :password  => "eyeysbspiyorxqjc",
+    :authentication => 'plain',
+    :enable_starttls_auto => true
   }
 
 
