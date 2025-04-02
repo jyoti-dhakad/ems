@@ -107,12 +107,12 @@ ActiveAdmin.register_page "Dashboard" do
           column "Country", :country
           column "Location" do |attendence|
             if attendence.latitude && attendence.longitude
-              location_url = "https://www.google.com/maps?q=#{URI.encode("#{attendence.latitude},#{attendence.longitude}")}"
+              location_url = "https://www.google.com/maps?q=#{CGI.escape("#{attendence.latitude},#{attendence.longitude}")}"
               link_to "View on Map", location_url, target: "_blank"
             else
               "Location Not Available"
             end
-          end
+          end          
           
         end
       end
