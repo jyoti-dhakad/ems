@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_11_181232) do
+ActiveRecord::Schema.define(version: 2025_04_01_101604) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -89,6 +89,11 @@ ActiveRecord::Schema.define(version: 2024_01_11_181232) do
     t.string "address"
     t.date "date_of_birth"
     t.string "gender"
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.integer "sign_in_count", default: 0, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -99,6 +104,12 @@ ActiveRecord::Schema.define(version: 2024_01_11_181232) do
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.string "city"
+    t.string "country"
+    t.string "ip_address"
+    t.datetime "check_in_time"
   end
 
   create_table "departments", force: :cascade do |t|
@@ -143,31 +154,28 @@ ActiveRecord::Schema.define(version: 2024_01_11_181232) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "leave_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "max_allowed"
+  end
+
   create_table "leaves", force: :cascade do |t|
     t.integer "staff_id", null: false
     t.date "start_date"
     t.date "end_date"
-    t.string "leave_type"
     t.text "reason"
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "leave_type_id"
   end
 
   create_table "notice_boards", force: :cascade do |t|
     t.string "subject"
     t.text "content"
     t.date "date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "profiles", force: :cascade do |t|
-    t.integer "staff_id", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.date "date_of_birth"
-    t.text "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
