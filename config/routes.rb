@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  # Admin Panel ko root route banane ke liye
+  root to: "admin/dashboard#index"
+
   namespace :admin do
     resources :leaves do
       member do
