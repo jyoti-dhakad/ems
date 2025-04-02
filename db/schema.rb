@@ -12,13 +12,16 @@
 
 ActiveRecord::Schema.define(version: 2025_04_01_101604) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.string "author_type"
-    t.integer "author_id"
+    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
@@ -38,7 +41,7 @@ ActiveRecord::Schema.define(version: 2025_04_01_101604) do
   create_table "active_admin_permissions", force: :cascade do |t|
     t.integer "managed_resource_id", null: false
     t.integer "role", default: 0, null: false
-    t.integer "state", limit: 1, default: 0, null: false
+    t.integer "state", limit: 2, default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["managed_resource_id", "role"], name: "active_admin_permissions_index", unique: true
@@ -80,7 +83,7 @@ ActiveRecord::Schema.define(version: 2025_04_01_101604) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "role", limit: 1, default: 0, null: false
+    t.integer "role", limit: 2, default: 0, null: false
     t.integer "department_id"
     t.datetime "login_time"
     t.datetime "logout_time"
